@@ -12,7 +12,7 @@ interface FormAddWordProps {
 export default function FormAddWord(props: FormAddWordProps) {
 
     const [word, setWord] = useState('');
-    const [translation, setTrnslation] = useState('');
+    const [translation, setTranslation] = useState('');
     const [inputsShown, setInputsShown] = useState(false);
     const { pushWord } = props;
 
@@ -21,7 +21,7 @@ export default function FormAddWord(props: FormAddWordProps) {
     }
 
     const handleTranslationChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setTrnslation(e.target.value);
+        setTranslation(e.target.value);
     }
 
     const handleAddBtnClick = () => {
@@ -31,6 +31,8 @@ export default function FormAddWord(props: FormAddWordProps) {
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
         pushWord(word, translation);
+        setWord('');
+        setTranslation('');
         setInputsShown(false);
     }
 

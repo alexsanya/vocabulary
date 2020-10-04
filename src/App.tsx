@@ -5,28 +5,63 @@ import Vocabulary from './pages/Vocabulary';
 import Training from './pages/Training';
 import Settings from './pages/Settings';
 import Stats from './pages/Stats';
+import SignIn from './pages/SignIn';
 import Error from './pages/Error';
-import { UserContext, defaultContext } from './UserContext';
+import { UserContext } from './UserContext';
 import './App.css';
-import { WordItem } from './interfaces';
+import { WordItem, UserCredential, WordsList } from './interfaces';
+import db from './firebase';
 
 function App() {
-  const [words, setWords] = useState(defaultContext.words);
+  const [words, setWords] = useState({});
+  const [userData, setUserData] = useState<UserCredential>(false);
+
+  const onSignIn = (userData: UserCredential) => {
+    setUserData(userData);
+    db.collection('Words').onSnapshot(snapshot => {
+      setWords(snapshot.docs.reduce((result, doc) => {
+        const data = doc.data();
+        console.log(data);
+        return {
+          ...result,
+          [data.spelling]: {
+            id: doc.id,
+            translation: data.translation,
+            progress: data.progress
+          }
+        };
+      },  {}));
+    });
+  };
+
   const context = {    
     words,
-    pushWord: (word: string, translation: string) =>
+    onSignIn,
+    userData,
+    pushWord: (word: string, translation: string) => {
       setWords({
         ...words,
         [word]: {
           translation,
           progress: 0
         }
-      }),
-    updateWord: (word: string, data: WordItem) =>
+      });
+      db.collection('Words').add({
+        spelling: word,
+        translation,
+        progress: 0
+      });
+    },
+    updateWord: (word: string, data: WordItem) => {
       setWords({
         ...words,
         [word]: data
-      })
+      });
+      const docId = (words as WordsList)[word].id;
+      db.collection('Words').doc(docId).update({
+        progress: data.progress
+      });
+    }
   }
 
   return (
@@ -36,6 +71,7 @@ function App() {
           <Router>
             <NavMenu />
             <Switch>
+              <Route path='/' exact component={SignIn} />
               <Route path='/vocabulary' exact component={Vocabulary} />
               <Route path='/training' exact component={Training} />
               <Route path='/settings' exact component={Settings} />
