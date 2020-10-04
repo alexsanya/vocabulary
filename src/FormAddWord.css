@@ -21,6 +21,26 @@
 }
 
 .form__add input {
-    padding: 0;
-    margin-left: 30px;
+    padding: 5px;
+}
+
+.form__add .word__input {
+    margin-left: 20px;
+}
+
+.form__add .word__submit {
+    display: none;
+}
+
+.row__input {
+    overflow: hidden;
+}
+
+.inputs-enter, .inputs-appear {
+    height: 0;
+}
+
+.inputs-enter-active, .inputs-appear-active {
+    height: 30px;
+    transition: height 300ms;    
 }

@@ -47,8 +47,6 @@ function TrainingWithContext({ context }: {context: UserContextData}) {
         setActualIndex((actualIndex + 1) % groupSize);
     }
 
-    console.log(actualWords, actualIndex);
-
     return (
         <Card word={currentWord} wordData={context.words[currentWord]} onAnswer={handleAnswer}></Card>
     )

@@ -23,3 +23,8 @@
     box-sizing: border-box;
     padding: 0 15px;
 }
+
+.nav-link {
+    text-decoration: none;
+    color: white;
+}

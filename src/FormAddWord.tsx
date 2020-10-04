@@ -1,4 +1,7 @@
 import React, { useState, FormEvent, ChangeEvent } from 'react'
+import { TextField } from '@material-ui/core';
+import AddCircleRoundedIcon from '@material-ui/icons/AddCircleRounded';
+import { CSSTransition } from 'react-transition-group';
 import './FormAddWord.css';
 import { NewWordSubmitFunction } from './interfaces';
 
@@ -10,6 +13,7 @@ export default function FormAddWord(props: FormAddWordProps) {
 
     const [word, setWord] = useState('');
     const [translation, setTrnslation] = useState('');
+    const [inputsShown, setInputsShown] = useState(false);
     const { pushWord } = props;
 
     const handleWordChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -20,24 +24,37 @@ export default function FormAddWord(props: FormAddWordProps) {
         setTrnslation(e.target.value);
     }
 
+    const handleAddBtnClick = () => {
+        setInputsShown(!inputsShown);
+    }
+
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
         pushWord(word, translation);
+        setInputsShown(false);
     }
+
+    const renderFormInput = () => (
+        <div className="row row__input">
+            <form className="form__add" onSubmit={handleSubmit}>
+                <TextField className="word__input word__original" variant="outlined" value={word} onChange={handleWordChange}/>
+                <TextField className="word__input word__translation" variant="outlined" value={translation} onChange={handleTranslationChange}/>
+                <button className="word__submit" type="submit"></button>
+            </form>
+        </div>
+    );
 
     return (
         <div className="addWord__wrap">
             <div className="addWord">
                 <div className="row row__button">
-                    <button className="btn__add"> + </button>
+                    <AddCircleRoundedIcon style={{ color: 'teal' }} onClick={handleAddBtnClick} />
                 </div>
-                <div className="row row__input">
-                    <form className="form__add" onSubmit={handleSubmit}>
-                        <input className="word__original" value={word} onChange={handleWordChange}></input>
-                        <input type="text" className="word__translation" value={translation} onChange={handleTranslationChange}></input>
-                        <button type="submit"></button>
-                    </form>
-                </div>
+                <CSSTransition in={inputsShown} timeout={500} classNames="inputs">
+                    <>
+                        { inputsShown && renderFormInput() }
+                    </>
+                </CSSTransition>
             </div>
         </div>
     )

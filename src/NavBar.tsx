@@ -7,16 +7,16 @@ export default function NavBar() {
         <nav className='navbar'>
             <ul className='nav-menu'>
                 <li>
-                    <Link to='/vocabulary'>Vocabulary</Link>
+                    <Link to='/vocabulary' className='nav-link'>Vocabulary</Link>
                 </li>
                 <li>
-                    <Link to='/training'>Training</Link>
+                    <Link to='/training' className='nav-link'>Training</Link>
                 </li>
                 <li>
-                    <Link to='/settings'>Settings</Link>
+                    <Link to='/settings' className='nav-link'>Settings</Link>
                 </li>
                 <li>
-                    <Link to='/stats'>Stats</Link>
+                    <Link to='/stats' className='nav-link'>Stats</Link>
                 </li>
             </ul>
         </nav>

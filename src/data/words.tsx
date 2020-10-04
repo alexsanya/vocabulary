@@ -2,15 +2,15 @@ import { WordsList } from '../interfaces';
 
 export default {
     'endearing': {
-        translation: 'endearing',
+        translation: 'милый',
         progress: 35
     },
     'to vow': {
-        translation: 'to vow',
+        translation: 'обет',
         progress: 50
     },
     'contest': {
-        translation: 'contest',
+        translation: 'соревнование',
         progress: 85
     }
  } as WordsList;
