@@ -1,0 +1,58 @@
+.navbar__mobile {
+    display: flex;
+    background: black;
+    color: white;
+    padding: 0;
+    margin: 0;
+    margin-bottom: 10px;
+    min-height: 40px;
+}
+
+.nav-menu-mobile {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 30px;
+    background: black;
+    border-radius: 7px;
+    list-style: none;
+}
+
+.mobileBar-enter {
+    left: -170px;
+}
+
+.mobileBar-exit {
+    left: 0;
+}
+
+.mobileBar-enter-active {
+    left: 0;
+    transition: left 300ms;    
+}
+
+.mobileBar-exit-active {
+    left: -170px;
+    transition: left 300ms;    
+}
+
+.nav-menu-mobile li {
+    padding: 11px 40px;
+    border-radius: 5px;
+    border-bottom: 1px solid gray;
+}
+
+.nav-menu-mobile li:hover {
+    background: gray;
+}
+
+.nav-menu-mobile li.last {
+    border-bottom: none;
+}
+
+.nav-menu-mobile li a {
+    text-decoration: none;
+    color:white;
+    font-weight: bold;
+    font-size: 110%;
+}

@@ -26,5 +26,7 @@
 
 .nav-link {
     text-decoration: none;
+    font-weight: bold;
+    font-size: 110%;
     color: white;
 }

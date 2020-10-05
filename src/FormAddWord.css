@@ -36,16 +36,20 @@
     overflow: hidden;
 }
 
-.inputs-enter, .inputs-appear {
+.inputs-enter {
     height: 0;
 }
 
-.inputs-enter-active, .inputs-appear-active {
+.inputs-exit {
+    height: 30px;
+}
+
+.inputs-enter-active {
     height: 30px;
     transition: height 300ms;    
 }
 
-.inputs-exit-active .inputs-appear-exit {
+.inputs-exit-active {
     height: 0;
     transition: height 300ms;
 }

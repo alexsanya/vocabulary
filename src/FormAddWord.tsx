@@ -36,26 +36,24 @@ export default function FormAddWord(props: FormAddWordProps) {
         setInputsShown(false);
     }
 
-    const renderFormInput = () => (
-        <div className="row row__input">
-            <form className="form__add" onSubmit={handleSubmit}>
-                <TextField className="word__input word__original" variant="outlined" value={word} onChange={handleWordChange}/>
-                <TextField className="word__input word__translation" variant="outlined" value={translation} onChange={handleTranslationChange}/>
-                <button className="word__submit" type="submit"></button>
-            </form>
-        </div>
-    );
-
     return (
         <div className="addWord__wrap">
             <div className="addWord">
                 <div className="row row__button">
-                    <AddCircleRoundedIcon style={{ color: 'black' }} onClick={handleAddBtnClick} />
+                    <AddCircleRoundedIcon style={{ color: 'black', cursor: 'pointer' }} onClick={handleAddBtnClick} />
                 </div>
-                <CSSTransition in={inputsShown} timeout={500} classNames="inputs">
-                    <>
-                        { inputsShown && renderFormInput() }
-                    </>
+                <CSSTransition
+                    in={inputsShown}
+                    timeout={300}
+                    unmountOnExit
+                    classNames="inputs">
+                    <div className="row row__input">
+                        <form className="form__add" onSubmit={handleSubmit}>
+                            <TextField className="word__input word__original" variant="outlined" value={word} onChange={handleWordChange}/>
+                            <TextField className="word__input word__translation" variant="outlined" value={translation} onChange={handleTranslationChange}/>
+                            <button className="word__submit" type="submit"></button>
+                        </form>
+                    </div>
                 </CSSTransition>
             </div>
         </div>

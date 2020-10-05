@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import firebase from 'firebase';
 import NavMenu from './NavBar';
+import MobileNavMenu from './MobileNavBar';
 import Vocabulary from './pages/Vocabulary';
 import Training from './pages/Training';
 import Settings from './pages/Settings';
@@ -16,10 +17,15 @@ import db from './firebase';
 function App() {
   const [words, setWords] = useState({});
   const [userData, setUserData] = useState<UserCredential>(false);
+  const [userDataReady, setUserDataReady] = useState(false);
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+
+  window.onresize = () => setScreenWidth(window.innerWidth);
 
   firebase.auth().onAuthStateChanged(function(user) {
     console.log('Auth state changed');
     console.log(user);
+    setUserDataReady(true);
     setUserData(user!);
   });
 
@@ -82,16 +88,21 @@ function App() {
       <div className="App">
         <UserContext.Provider value={context}>
           <Router>
-            <NavMenu />
+            { screenWidth <= 960 ? <MobileNavMenu /> : <NavMenu /> }
             <div className="contentArea">
-              <Switch>
-                <Route path='/' exact component={SignIn} />
-                <Route path='/vocabulary' exact component={Vocabulary} />
-                <Route path='/training' exact component={Training} />
-                <Route path='/settings' exact component={Settings} />
-                <Route path='/stats' exact component={Stats} />
-                <Route component={Error} />
-              </Switch>
+              { userDataReady ?
+                  (
+                    <Switch>
+                      <Route path='/' exact component={SignIn} />
+                      <Route path='/vocabulary' exact component={Vocabulary} />
+                      <Route path='/training' exact component={Training} />
+                      <Route path='/settings' exact component={Settings} />
+                      <Route path='/stats' exact component={Stats} />
+                      <Route component={Error} />
+                    </Switch>
+                  ) : (<></>)
+              }
+
             </div>
           </Router>
         </UserContext.Provider>
