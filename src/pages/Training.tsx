@@ -5,14 +5,15 @@ import Card from '../components/Card'
 import { UserContext } from '../UserContext'
 import { UserContextData, WordsList } from '../interfaces';
 import './Training.css'
+import { Redirect } from 'react-router-dom';
 
 export default function Training() {
 
     return (
         <UserContext.Consumer>
-            {(value: UserContextData) => (
-                <TrainingWithContext context={value} />
-            )}
+            { (value: UserContextData) => value.userData ? (
+                <TrainingWithContext context={value}/>
+            ) : (<Redirect to='/' />)}
         </UserContext.Consumer>
     )
 }

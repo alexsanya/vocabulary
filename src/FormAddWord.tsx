@@ -50,7 +50,7 @@ export default function FormAddWord(props: FormAddWordProps) {
         <div className="addWord__wrap">
             <div className="addWord">
                 <div className="row row__button">
-                    <AddCircleRoundedIcon style={{ color: 'teal' }} onClick={handleAddBtnClick} />
+                    <AddCircleRoundedIcon style={{ color: 'black' }} onClick={handleAddBtnClick} />
                 </div>
                 <CSSTransition in={inputsShown} timeout={500} classNames="inputs">
                     <>

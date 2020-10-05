@@ -16,7 +16,7 @@ export default function NavBar() {
                     <Link to='/settings' className='nav-link'>Settings</Link>
                 </li>
                 <li>
-                    <Link to='/stats' className='nav-link'>Stats</Link>
+                    <Link to='/stats' className='nav-link'>Sign out</Link>
                 </li>
             </ul>
         </nav>

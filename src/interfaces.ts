@@ -4,7 +4,7 @@ export interface WordItem {
     progress: number;
 }
 
-export type UserCredential = firebase.auth.UserCredential | boolean;
+export type UserCredential = object | boolean;
 export type NewWordSubmitFunction = (word: string, translation: string) => void;
 export type WordUpdateFunction = (word: string, data: WordItem) => void;
 export type OnSignInFunction = (userData: UserCredential) => void;

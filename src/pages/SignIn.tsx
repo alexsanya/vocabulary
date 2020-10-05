@@ -1,4 +1,5 @@
 import React from 'react'
+import firebase from 'firebase';
 import { auth, provider } from '../firebase';
 import { Button } from '@material-ui/core';
 import { UserContextData, OnSignInFunction } from '../interfaces';
@@ -18,7 +19,8 @@ export default function SignIn() {
 function SignInWithContext({ context }: {context: UserContextData}) {
 
     const handleSignIn = async (onSignIn: OnSignInFunction) => {
-        const userData = await auth.signInWithPopup(provider);
+        const userData = await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+            .then(() => auth.signInWithPopup(provider));
         console.log(userData);
         onSignIn(userData);
     }

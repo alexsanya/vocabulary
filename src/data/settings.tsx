@@ -5,5 +5,5 @@ export interface Config {
 
 export default {
     triesBeforeCompletion: 5,
-    groupSize: 5
+    groupSize: 15
 } as Config;
