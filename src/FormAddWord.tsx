@@ -40,7 +40,7 @@ export default function FormAddWord(props: FormAddWordProps) {
         <div className="addWord__wrap">
             <div className="addWord">
                 <div className="row row__button">
-                    <AddCircleRoundedIcon style={{ color: 'black', cursor: 'pointer' }} onClick={handleAddBtnClick} />
+                    <AddCircleRoundedIcon fontSize="large" style={{ color: 'black', cursor: 'pointer' }} onClick={handleAddBtnClick} />
                 </div>
                 <CSSTransition
                     in={inputsShown}

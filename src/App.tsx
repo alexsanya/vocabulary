@@ -11,51 +11,65 @@ import SignIn from './pages/SignIn';
 import Error from './pages/Error';
 import { UserContext } from './UserContext';
 import './App.css';
-import { WordItem, UserCredential, WordsList } from './interfaces';
+import { WordItem, UserCredential } from './interfaces';
 import db from './firebase';
 
 function App() {
   const [words, setWords] = useState({});
   const [userData, setUserData] = useState<UserCredential>(false);
   const [userDataReady, setUserDataReady] = useState(false);
+  const [userDocumentId, setUserDocumentId] = useState('');
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
 
   window.onresize = () => setScreenWidth(window.innerWidth);
 
   firebase.auth().onAuthStateChanged(function(user) {
-    console.log('Auth state changed');
-    console.log(user);
     setUserDataReady(true);
     setUserData(user!);
   });
 
-  const onSignIn = (userData: UserCredential) => {
-    setUserData(userData);
-  };
-
   useEffect(() => {
-    if (!userData) {
-      return;
-    }
-    db.collection('Words').onSnapshot(snapshot => {
-      setWords(snapshot.docs.reduce((result, doc) => {
-        const data = doc.data();
-        console.log(data);
-        return {
-          ...result,
-          [data.spelling]: {
-            id: doc.id,
-            translation: data.translation,
-            progress: data.progress
-          }
-        };
-      },  {}));
-    });
+    (async () => {
+      if (!userData) {
+        return;
+      }
+      const userId = (userData as {uid: string}).uid!;
+      console.log('User data uid:');
+      console.log(userId);
+      const snapshot = await db.collection('Users').where('userId', '==', userId).get();
+
+
+      (window as any).db = db;
+
+      if (!snapshot.docs.length) {
+        db.collection('Users').add({
+          userId,
+          Words: {}
+        });
+      } else {
+        //console.log('Docs:');
+        setUserDocumentId(snapshot.docs[0].id);
+        setWords(snapshot.docs[0].data().Words);
+      }
+    })();
+    // db.collection('Words').onSnapshot(snapshot => {
+    //   setWords(snapshot.docs.reduce((result, doc) => {
+    //     const data = doc.data();
+    //     console.log(data);
+    //     return {
+    //       ...result,
+    //       [data.spelling]: {
+    //         id: doc.id,
+    //         translation: data.translation,
+    //         progress: data.progress
+    //       }
+    //     };
+    //   },  {}));
+    // });
   }, [userData])
 
   const context = {    
     words,
-    onSignIn,
     userData,
     pushWord: (word: string, translation: string) => {
       setWords({
@@ -65,10 +79,11 @@ function App() {
           progress: 0
         }
       });
-      db.collection('Words').add({
-        spelling: word,
-        translation,
-        progress: 0
+      db.collection('Users').doc(userDocumentId).update({
+        [`Words.${word}`]: {
+          translation,
+          progress: 0
+        }
       });
     },
     updateWord: (word: string, data: WordItem) => {
@@ -76,9 +91,8 @@ function App() {
         ...words,
         [word]: data
       });
-      const docId = (words as WordsList)[word].id;
-      db.collection('Words').doc(docId).update({
-        progress: data.progress
+      db.collection('Users').doc(userDocumentId).update({
+        [`Words.${word}.progress`]: data.progress
       });
     }
   }

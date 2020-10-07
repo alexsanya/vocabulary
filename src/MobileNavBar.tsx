@@ -2,13 +2,22 @@ import React, { useState } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import MenuIcon from '@material-ui/icons/Menu';
 import './MobileNavBar.css';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
-export default function MobileNavBar() {
+interface MobileNavBarWithRouterProps {
+    history: { push: Function }
+}
+
+function MobileNavBar({ history }: MobileNavBarWithRouterProps) {
 
     const [showMenu, setShowMenu] = useState(false);
 
     const handleOpenMenuClick = () => setShowMenu(!showMenu);
+
+    const handleLinkClick = (location: string) => {
+        setShowMenu(false);
+        history.push(location);
+    };
 
 
     return (
@@ -22,20 +31,22 @@ export default function MobileNavBar() {
                     unmountOnExit
                     classNames="mobileBar">
                 <ul className='nav-menu-mobile'>
-                    <li>
-                        <Link to='/vocabulary' className='nav-link' onClick={handleOpenMenuClick}>Vocabulary</Link>
+                    <li onClick={() => handleLinkClick('/vocabulary')}>
+                        <Link to='/vocabulary' className='nav-link'>Vocabulary</Link>
                     </li>
-                    <li>
-                        <Link to='/training' className='nav-link' onClick={handleOpenMenuClick}>Training</Link>
+                    <li onClick={() => handleLinkClick('/training')}>
+                        <Link to='/training' className='nav-link'>Training</Link>
                     </li>
-                    <li>
-                        <Link to='/settings' className='nav-link' onClick={handleOpenMenuClick}>Settings</Link>
+                    <li onClick={() => handleLinkClick('/settings')}>
+                        <Link to='/settings' className='nav-link'>Settings</Link>
                     </li>
-                    <li className="last">
-                        <Link to='/stats' className='nav-link' onClick={handleOpenMenuClick}>Sign out</Link>
+                    <li className="last" onClick={() => handleLinkClick('/stats')}>
+                        <Link to='/stats' className='nav-link'>Sign out</Link>
                     </li>
                 </ul>
             </CSSTransition>
         </>
     );
 }
+
+export default withRouter(MobileNavBar);

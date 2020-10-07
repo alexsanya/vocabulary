@@ -13,7 +13,6 @@ export const defaultContext: UserContextData = {
     updateWord: (word: string, data: WordItem) => {
         words[word] = data;
     },
-    userData: false,
-    onSignIn: () => {}
+    userData: false
 }
 export const UserContext = React.createContext(defaultContext);

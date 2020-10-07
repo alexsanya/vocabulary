@@ -22,6 +22,7 @@
 
 .form__add input {
     padding: 5px;
+    font-size: 110%;
 }
 
 .form__add .word__input {
