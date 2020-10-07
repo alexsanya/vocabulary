@@ -11,11 +11,12 @@ import SignIn from './pages/SignIn';
 import Error from './pages/Error';
 import { UserContext } from './UserContext';
 import './App.css';
-import { WordItem, UserCredential } from './interfaces';
+import { WordItem, UserCredential, Mode } from './interfaces';
 import db from './firebase';
 
 function App() {
   const [words, setWords] = useState({});
+  const [mode, setMode] = useState(Mode.SHOW_ORIGINAL);
   const [userData, setUserData] = useState<UserCredential>(false);
   const [userDataReady, setUserDataReady] = useState(false);
   const [userDocumentId, setUserDocumentId] = useState('');
@@ -24,7 +25,7 @@ function App() {
   window.onresize = () => setScreenWidth(window.innerWidth);
 
   firebase.auth().onAuthStateChanged(function(user) {
-    setUserDataReady(true);
+    console.log('Set user data ready >>>>>>>>>>>>>>>>>>>>>>');
     setUserData(user!);
   });
 
@@ -47,30 +48,18 @@ function App() {
           Words: {}
         });
       } else {
-        //console.log('Docs:');
         setUserDocumentId(snapshot.docs[0].id);
         setWords(snapshot.docs[0].data().Words);
       }
+      setUserDataReady(true);
     })();
-    // db.collection('Words').onSnapshot(snapshot => {
-    //   setWords(snapshot.docs.reduce((result, doc) => {
-    //     const data = doc.data();
-    //     console.log(data);
-    //     return {
-    //       ...result,
-    //       [data.spelling]: {
-    //         id: doc.id,
-    //         translation: data.translation,
-    //         progress: data.progress
-    //       }
-    //     };
-    //   },  {}));
-    // });
   }, [userData])
 
   const context = {    
     words,
     userData,
+    mode,
+    setMode: (mode: Mode) => setMode(mode),
     pushWord: (word: string, translation: string) => {
       setWords({
         ...words,
@@ -100,26 +89,23 @@ function App() {
   return (
     <div className="wrapper">
       <div className="App">
-        <UserContext.Provider value={context}>
-          <Router>
-            { screenWidth <= 960 ? <MobileNavMenu /> : <NavMenu /> }
-            <div className="contentArea">
-              { userDataReady ?
-                  (
-                    <Switch>
-                      <Route path='/' exact component={SignIn} />
-                      <Route path='/vocabulary' exact component={Vocabulary} />
-                      <Route path='/training' exact component={Training} />
-                      <Route path='/settings' exact component={Settings} />
-                      <Route path='/stats' exact component={Stats} />
-                      <Route component={Error} />
-                    </Switch>
-                  ) : (<></>)
-              }
-
-            </div>
-          </Router>
-        </UserContext.Provider>
+        { userDataReady ?
+          <UserContext.Provider value={context}>
+            <Router>
+              { screenWidth <= 960 ? <MobileNavMenu /> : <NavMenu /> }
+              <div className="contentArea">
+                <Switch>
+                  <Route path='/' exact component={SignIn} />
+                  <Route path='/vocabulary' exact component={Vocabulary} />
+                  <Route path='/training' exact component={Training} />
+                  <Route path='/settings' exact component={Settings} />
+                  <Route path='/stats' exact component={Stats} />
+                  <Route component={Error} />
+                </Switch>
+              </div>
+            </Router>
+          </UserContext.Provider> : <></>
+        }
       </div>
     </div>
   );

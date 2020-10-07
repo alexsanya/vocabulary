@@ -1,14 +1,33 @@
 import React, { useState } from 'react';
 import { CSSTransition } from 'react-transition-group';
+import { Mode, UserContextData } from './interfaces';
+import { UserContext } from './UserContext';
 import MenuIcon from '@material-ui/icons/Menu';
 import './MobileNavBar.css';
 import { Link, withRouter } from 'react-router-dom';
 
 interface MobileNavBarWithRouterProps {
-    history: { push: Function }
+    history: { push: Function },
+}
+
+interface MobileNavBarWithContextProps {
+    context: UserContextData
 }
 
 function MobileNavBar({ history }: MobileNavBarWithRouterProps) {
+    return (
+        <UserContext.Consumer>
+            { (value: UserContextData) =>
+                <MobileNavBarWithContext context={value} history={history} />
+            }
+        </UserContext.Consumer>
+    );
+}
+
+function MobileNavBarWithContext(props: MobileNavBarWithRouterProps & MobileNavBarWithContextProps) {
+
+    const { history } = props;
+    const { mode, setMode } = props.context;
 
     const [showMenu, setShowMenu] = useState(false);
 
@@ -19,6 +38,10 @@ function MobileNavBar({ history }: MobileNavBarWithRouterProps) {
         history.push(location);
     };
 
+    const handleModeSwich = () => {
+        (mode === Mode.SHOW_ORIGINAL) ? setMode(Mode.SHOW_TRANSLATION) : setMode(Mode.SHOW_ORIGINAL);
+        setShowMenu(false);
+    }
 
     return (
         <>
@@ -31,6 +54,11 @@ function MobileNavBar({ history }: MobileNavBarWithRouterProps) {
                     unmountOnExit
                     classNames="mobileBar">
                 <ul className='nav-menu-mobile'>
+                    <li onClick={handleModeSwich}>
+                        <div className='nav-link'>
+                            Show {mode === Mode.SHOW_ORIGINAL ? 'translation' : 'original'}
+                        </div>
+                    </li>
                     <li onClick={() => handleLinkClick('/vocabulary')}>
                         <Link to='/vocabulary' className='nav-link'>Vocabulary</Link>
                     </li>

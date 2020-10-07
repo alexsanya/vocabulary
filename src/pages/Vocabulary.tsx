@@ -2,7 +2,7 @@ import React from 'react';
 import styled, { css } from 'styled-components';
 import './Vocabulary.css';
 import FormAddWord from '../FormAddWord';
-import { UserContextData } from '../interfaces';
+import { UserContextData, Mode } from '../interfaces';
 import { UserContext } from '../UserContext';
 import { Redirect } from 'react-router-dom';
 
@@ -42,14 +42,15 @@ const WordProgressItem = styled.li`
 
 
 function VocabularyWithContext({ context }: { context: UserContextData}) {
+    const { words, mode, pushWord } = context;
     return (
         <>
-            <FormAddWord pushWord={context.pushWord} />
+            <FormAddWord pushWord={ pushWord } />
             <ul className="vocabulary__list">
-                {Object.keys(context.words).map(key => (
-                    <WordProgressItem key={key} progress={context.words[key].progress}>
-                        <span className="item__word">{key}</span>
-                        <span className="item__progress">{context.words[key].progress}%</span>
+                {Object.keys(words).map(key => (
+                    <WordProgressItem key={key} progress={words[key].progress}>
+                        <span className="item__word">{mode === Mode.SHOW_ORIGINAL ? key : words[key].translation}</span>
+                        <span className="item__progress">{words[key].progress}%</span>
                     </WordProgressItem> 
                 ))}
             </ul>

@@ -8,12 +8,14 @@ import './Training.css'
 import { Redirect } from 'react-router-dom';
 
 export default function Training() {
-
     return (
         <UserContext.Consumer>
-            { (value: UserContextData) => value.userData ? (
+
+            { (value: UserContextData) => {
+                console.log('RENDER TRAINING >>>>>>>>>>>>>>>>>>>>>>', value);
+                return value.userData ? (
                 <TrainingWithContext context={value}/>
-            ) : (<Redirect to='/' />)}
+            ) : (<Redirect to='/' />)}}
         </UserContext.Consumer>
     )
 }

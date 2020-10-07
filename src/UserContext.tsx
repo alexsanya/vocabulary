@@ -1,6 +1,6 @@
 import React from 'react';
 import words from './data/words';
-import { UserContextData, WordItem } from './interfaces';
+import { UserContextData, WordItem, Mode } from './interfaces';
 
 export const defaultContext: UserContextData = {
     words,
@@ -13,6 +13,8 @@ export const defaultContext: UserContextData = {
     updateWord: (word: string, data: WordItem) => {
         words[word] = data;
     },
-    userData: false
+    setMode: (mode: Mode) => {},
+    userData: false,
+    mode: Mode.SHOW_ORIGINAL
 }
 export const UserContext = React.createContext(defaultContext);

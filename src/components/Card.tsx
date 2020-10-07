@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import Paper from '@material-ui/core/Paper';
 import { Button } from '@material-ui/core';
-import { WordItem } from '../interfaces';
+import { UserContextData, WordItem, Mode } from '../interfaces';
+import { UserContext } from '../UserContext';
 
 interface CardProps {
     word: string;
@@ -10,7 +11,18 @@ interface CardProps {
 }
 
 export default function Card(props: CardProps) {
-    const { word, wordData, onAnswer } = props;
+    return (
+        <UserContext.Consumer>
+            { (value: UserContextData) =>
+                <CardWithContext context={value} {...props} />
+            }
+        </UserContext.Consumer>
+    )
+}
+
+function CardWithContext(props: CardProps & { context: UserContextData }) {
+    const { word, wordData, context, onAnswer } = props;
+    const { mode } = context;
 
     const [showTranslation, setShowTranslation] = useState(false);
 
@@ -50,6 +62,9 @@ export default function Card(props: CardProps) {
         </div>
     );
 
+    const [cardTop, cardBottom] = (mode === Mode.SHOW_ORIGINAL) ?
+        [word, wordData.translation] : [wordData.translation, word];
+
     return (
         <>
             <div className="row">
@@ -57,7 +72,7 @@ export default function Card(props: CardProps) {
             </div>
             <div className="row">
                 <Paper elevation={3} className="wordCard">
-                    <span className="word">{ showTranslation ? wordData.translation : word }</span>
+                    <span className="word">{ showTranslation ? cardBottom : cardTop }</span>
                 </Paper>
             </div>
             { showTranslation ?  renderNextButton() : renderYesNoButtons() }

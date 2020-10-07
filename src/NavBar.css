@@ -21,10 +21,13 @@
 
 .nav-menu li {
     box-sizing: border-box;
-    padding: 0 15px;
+    padding: 0;
+    flex-basis: 20%;
+    text-align: center;
 }
 
 .nav-link {
+    cursor: pointer;
     text-decoration: none;
     font-weight: bold;
     font-size: 110%;
