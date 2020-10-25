@@ -16,6 +16,7 @@ import db from './firebase';
 
 function App() {
   const [words, setWords] = useState({});
+  const [filter, setFilter] = useState('');
   const [mode, setMode] = useState(Mode.SHOW_ORIGINAL);
   const [userData, setUserData] = useState<UserCredential>(false);
   const [userDataReady, setUserDataReady] = useState(false);
@@ -57,6 +58,7 @@ function App() {
 
   const context = {    
     words,
+    filter,
     userData,
     mode,
     setMode: (mode: Mode) => setMode(mode),
@@ -74,6 +76,10 @@ function App() {
           progress: 0
         }
       });
+    },
+    setFilter: (pattern: string) => {
+      console.log('Setting filter: ', pattern);
+      setFilter(pattern);
     },
     updateWord: (word: string, data: WordItem) => {
       setWords({

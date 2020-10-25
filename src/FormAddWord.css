@@ -10,17 +10,28 @@
 
 .row {
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     margin-bottom: 10px;
 }
 
-.form__add {
+.row__froms {
+    display: flex;
+}
+
+.form__input {
     width: 100%;
     display: flex;
+}
+
+.form__add {
     justify-content: flex-end;
 }
 
-.form__add input {
+.form__search {
+    justify-content: flex-start;
+}
+
+.form__input input {
     padding: 5px;
     font-size: 110%;
 }
@@ -29,7 +40,7 @@
     margin-left: 20px;
 }
 
-.form__add .word__submit {
+.form__input .word__submit {
     display: none;
 }
 

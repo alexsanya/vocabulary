@@ -2,6 +2,8 @@ import React from 'react';
 import words from './data/words';
 import { UserContextData, WordItem, Mode } from './interfaces';
 
+let filter = '';
+
 export const defaultContext: UserContextData = {
     words,
     pushWord: (word: string, translation: string) => {
@@ -9,6 +11,10 @@ export const defaultContext: UserContextData = {
             translation,
             progress: 0
         };
+    },
+    filter,
+    setFilter: (pattern: string) => {
+        filter = pattern;
     },
     updateWord: (word: string, data: WordItem) => {
         words[word] = data;

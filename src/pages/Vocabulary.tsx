@@ -38,16 +38,20 @@ const WordProgressItem = styled.li`
     }}
 `;
 
-
-
-
 function VocabularyWithContext({ context }: { context: UserContextData}) {
-    const { words, mode, pushWord } = context;
+    const { words, mode, pushWord, filter, setFilter } = context;
+    const filterWords = (key: string) => {
+        if (mode === Mode.SHOW_ORIGINAL) {
+            return key.indexOf(filter) >= 0;
+        } else {
+            return words[key].translation.indexOf(filter) >= 0;
+        }
+    }
     return (
         <>
-            <FormAddWord pushWord={ pushWord } />
+            <FormAddWord pushWord={ pushWord } setFilter={ setFilter } />
             <ul className="vocabulary__list">
-                {Object.keys(words).map(key => (
+                {Object.keys(words).filter(filterWords).map(key => (
                     <WordProgressItem key={key} progress={words[key].progress}>
                         <span className="item__word">{mode === Mode.SHOW_ORIGINAL ? key : words[key].translation}</span>
                         <span className="item__progress">{words[key].progress}%</span>
