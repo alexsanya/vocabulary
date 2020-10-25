@@ -15,9 +15,11 @@ export default function NavBar() {
 }
 
 function NavBarWithContext({ context }: {context: UserContextData}) {
-    const { mode, setMode } = context;
-    const handleModeSwich = () => 
-        (mode === Mode.SHOW_ORIGINAL) ? setMode(Mode.SHOW_TRANSLATION) : setMode(Mode.SHOW_ORIGINAL)
+    const { mode, setMode, setFilter } = context;
+    const handleModeSwich = () => {
+        (mode === Mode.SHOW_ORIGINAL) ? setMode(Mode.SHOW_TRANSLATION) : setMode(Mode.SHOW_ORIGINAL);
+        setFilter('');
+    }
     return (
         <nav className='navbar'>
             <ul className='nav-menu'>

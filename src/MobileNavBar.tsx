@@ -27,7 +27,7 @@ function MobileNavBar({ history }: MobileNavBarWithRouterProps) {
 function MobileNavBarWithContext(props: MobileNavBarWithRouterProps & MobileNavBarWithContextProps) {
 
     const { history } = props;
-    const { mode, setMode } = props.context;
+    const { mode, setMode, setFilter } = props.context;
 
     const [showMenu, setShowMenu] = useState(false);
 
@@ -41,6 +41,7 @@ function MobileNavBarWithContext(props: MobileNavBarWithRouterProps & MobileNavB
     const handleModeSwich = () => {
         (mode === Mode.SHOW_ORIGINAL) ? setMode(Mode.SHOW_TRANSLATION) : setMode(Mode.SHOW_ORIGINAL);
         setShowMenu(false);
+        setFilter('');
     }
 
     return (

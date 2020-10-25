@@ -9,23 +9,22 @@ import { NewWordSubmitFunction, FilterSubmitFunction } from './interfaces';
 interface FormAddWordProps {
     pushWord: NewWordSubmitFunction;
     setFilter: FilterSubmitFunction;
+    filter: string;
 }
 
 export default function FormAddWord(props: FormAddWordProps) {
 
     const [word, setWord] = useState('');
-    const [pattern, setPattern] = useState('');
     const [translation, setTranslation] = useState('');
     const [addFormShown, setAddFormShown] = useState(false);
     const [searchFormShown, setSearchFormShown] = useState(false);
-    const { pushWord, setFilter } = props;
+    const { pushWord, filter, setFilter } = props;
 
     const handleWordChange = (e: ChangeEvent<HTMLInputElement>) => {
         setWord(e.target.value);
     }
 
     const handlePatternChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setPattern(e.target.value);
         setFilter(e.target.value);
     }
 
@@ -64,7 +63,7 @@ export default function FormAddWord(props: FormAddWordProps) {
                         classNames="inputs">
                         <div className="row row__input">
                             <form className="form__input form__search">
-                                <TextField className="word__input word__original" variant="outlined" value={pattern} onChange={handlePatternChange}/>
+                                <TextField className="word__input word__original" variant="outlined" value={filter} onChange={handlePatternChange}/>
                             </form>
                         </div>
                     </CSSTransition>

@@ -49,7 +49,7 @@ function VocabularyWithContext({ context }: { context: UserContextData}) {
     }
     return (
         <>
-            <FormAddWord pushWord={ pushWord } setFilter={ setFilter } />
+            <FormAddWord pushWord={ pushWord } setFilter={ setFilter } filter={ filter } />
             <ul className="vocabulary__list">
                 {Object.keys(words).filter(filterWords).map(key => (
                     <WordProgressItem key={key} progress={words[key].progress}>
