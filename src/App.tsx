@@ -1,3 +1,4 @@
+import * as _ from 'lodash';
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import firebase from 'firebase';
@@ -75,6 +76,14 @@ function App() {
           translation,
           progress: 0
         }
+      });
+    },
+    removeWord: (word: string) => {
+      console.log('Removing word: ', word);
+      const wordsExcluded = _.omit(words, word);
+      setWords(wordsExcluded);
+      db.collection('Users').doc(userDocumentId).update({
+        Words: wordsExcluded
       });
     },
     setFilter: (pattern: string) => {

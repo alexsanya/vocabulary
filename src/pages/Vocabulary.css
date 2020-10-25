@@ -7,6 +7,10 @@
     align-items: flex-start;
 }
 
+.word__container {
+    display: flex;
+    width: 100%;
+}
 
 .item__progress {
     color: black;

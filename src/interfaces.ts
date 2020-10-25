@@ -7,6 +7,7 @@ export interface WordItem {
 export type UserCredential = {uid: string} | boolean;
 export type NewWordSubmitFunction = (word: string, translation: string) => void;
 export type FilterSubmitFunction = (pattern: string) => void;
+export type RemoveWordFunction = (word: string) => void;
 export type WordUpdateFunction = (word: string, data: WordItem) => void;
 export type SetModeFunction = (mode: Mode) => void;
 export enum Mode {SHOW_ORIGINAL, SHOW_TRANSLATION};
@@ -22,6 +23,7 @@ export interface UserContextData {
     setMode: SetModeFunction,
     userData: UserCredential;
     pushWord: NewWordSubmitFunction;
+    removeWord: RemoveWordFunction;
     setFilter: FilterSubmitFunction;
     updateWord: WordUpdateFunction;
 }

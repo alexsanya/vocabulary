@@ -16,6 +16,9 @@ export const defaultContext: UserContextData = {
     setFilter: (pattern: string) => {
         filter = pattern;
     },
+    removeWord: (word: string) => {
+        delete words[word];
+    },
     updateWord: (word: string, data: WordItem) => {
         words[word] = data;
     },

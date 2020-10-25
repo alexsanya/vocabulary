@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 import './Vocabulary.css';
 import FormAddWord from '../FormAddWord';
 import { UserContextData, Mode } from '../interfaces';
 import { UserContext } from '../UserContext';
 import { Redirect } from 'react-router-dom';
+import DeleteRoundedIcon from '@material-ui/icons/DeleteRounded';
 
 export default function Vocabulary() {
     return (
@@ -28,6 +29,7 @@ const WordProgressItem = styled.li`
     justify-content: space-between;
     color: black;
     font-weight: 700;
+    cursor: pointer;
     ${(props: {progress: number}) => {
         const { progress } = props;
         if (progress <= 3 || progress >= 100) {
@@ -39,7 +41,21 @@ const WordProgressItem = styled.li`
 `;
 
 function VocabularyWithContext({ context }: { context: UserContextData}) {
-    const { words, mode, pushWord, filter, setFilter } = context;
+    const { words, mode, pushWord, removeWord, filter, setFilter } = context;
+    const [currentWord, setCurrentWord] = useState('');
+
+    const changeCurrentWord = (word: string) => {
+        if (word === currentWord) {
+            setCurrentWord('');
+        } else {
+            setCurrentWord(word);
+        }
+    }
+
+    const handleRemoveWord = (word: string) => {
+        removeWord(word);
+    }
+
     const filterWords = (key: string) => {
         if (mode === Mode.SHOW_ORIGINAL) {
             return key.indexOf(filter) >= 0;
@@ -52,10 +68,17 @@ function VocabularyWithContext({ context }: { context: UserContextData}) {
             <FormAddWord pushWord={ pushWord } setFilter={ setFilter } filter={ filter } />
             <ul className="vocabulary__list">
                 {Object.keys(words).filter(filterWords).map(key => (
-                    <WordProgressItem key={key} progress={words[key].progress}>
-                        <span className="item__word">{mode === Mode.SHOW_ORIGINAL ? key : words[key].translation}</span>
-                        <span className="item__progress">{words[key].progress}%</span>
-                    </WordProgressItem> 
+                    <div className="word__container">
+                        <WordProgressItem key={key} progress={words[key].progress} onClick={ () => changeCurrentWord(key) }>
+                            <span className="item__word">{mode === Mode.SHOW_ORIGINAL ? key : words[key].translation}</span>
+                            <span className="item__progress">{words[key].progress}%</span>
+                        </WordProgressItem>
+                        {
+                            (key === currentWord) ?
+                                <DeleteRoundedIcon fontSize="large" onClick={() => handleRemoveWord(key)} style={{ color: 'black', cursor: 'pointer', margin: 'auto 5px' }} />
+                            :   <></>
+                        }
+                    </div>
                 ))}
             </ul>
         </>
